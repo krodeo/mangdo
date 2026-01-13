@@ -15,9 +15,14 @@ set /p "maxChapter=Enter the last chapter: "
 :: --- Wanna read first?
 set /p "alsoRead=Want to read? (y/n) "
 
-:: --- Make folder if dont exist
-if not exist "%manga%" (
-    mkdir "%manga%"
+:: --- Make downloaded folder if dont exist
+if not exist "downloaded" (
+    mkdir "downloaded"
+)
+
+:: --- Make manga folder if dont exist
+if not exist "downloaded\%manga%" (
+    mkdir "downloaded\%manga%"
 )
 
 :: --- Sat Set
@@ -55,10 +60,11 @@ for /L %%c in (%minChapter%,1,%maxChapter%) do (
     :: --- Check is chapter exist!
     if !page! GTR 1 (
         :: --- Zip image files for the current chapter
-        "C:\Program Files\7-Zip\7z.exe" a -tzip "%mangaName%_!chapter!.zip" "%mangaName%_!chapter!_*.jpg" -y >nul 2>&1
+        powershell -NoLogo -NoProfile -Command ^
+        "Compress-Archive -Path '%mangaName%_!chapter!_*.jpg' -DestinationPath '%mangaName%_!chapter!.zip' -Force" >nul 2>&1
         
         :: --- Move to folder
-        move /Y "%mangaName%_!chapter!.zip" "%manga%\" >nul 2>&1
+        move /Y "%mangaName%_!chapter!.zip" "downloaded\%manga%\" >nul 2>&1
 
         :: --- Then delete them if you don't want to read it after
         if   "%alsoRead%"=="n" (
