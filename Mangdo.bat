@@ -46,12 +46,12 @@ for /L %%c in (%minChapter%,1,%maxChapter%) do (
             set "page=%%p"
             
             :: --- Download image
-            curl -s -o "!fileName!" "https://images.mangafreak.me/mangas/%mangaName%/%mangaName%_%%c/%mangaName%_%%c_%%p.jpg"
+            curl -s -o "downloaded\!fileName!" "https://images.mangafreak.me/mangas/%mangaName%/%mangaName%_%%c/%mangaName%_%%c_%%p.jpg"
             
             :: --- If the end of page
-            for %%A in ("!fileName!") do set fileSize=%%~zA
+            for %%A in ("downloaded\!fileName!") do set fileSize=%%~zA
             if !fileSize! == 5 (
-                del /q "!fileName!"
+                del /q "downloaded\!fileName!"
                 set "endOfPage=true"
             )
         )
@@ -68,7 +68,7 @@ for /L %%c in (%minChapter%,1,%maxChapter%) do (
 
         :: --- Then delete them if you don't want to read it after
         if   "%alsoRead%"=="n" (
-            del /q "%mangaName%_!chapter!_*.jpg" >nul 2>&1
+            del /q "downloaded\%mangaName%_!chapter!_*.jpg" >nul 2>&1
         )
 
         echo done
