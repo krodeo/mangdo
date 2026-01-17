@@ -61,10 +61,10 @@ for /L %%c in (%minChapter%,1,%maxChapter%) do (
     if !page! GTR 1 (
         :: --- Zip image files for the current chapter
         powershell -NoLogo -NoProfile -Command ^
-        "Compress-Archive -Path '%mangaName%_!chapter!_*.jpg' -DestinationPath '%mangaName%_!chapter!.zip' -Force" >nul 2>&1
+        "Compress-Archive -Path 'downloaded\%mangaName%_!chapter!_*.jpg' -DestinationPath 'downloaded\%mangaName%_!chapter!.zip' -Force" >nul 2>&1
         
         :: --- Move to folder
-        move /Y "%mangaName%_!chapter!.zip" "downloaded\%manga%\" >nul 2>&1
+        move /Y "downloaded\%mangaName%_!chapter!.zip" "downloaded\%manga%" >nul 2>&1
 
         :: --- Then delete them if you don't want to read it after
         if   "%alsoRead%"=="n" (
